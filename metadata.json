@@ -1,0 +1,8 @@
+{
+  "name": "BrandCraft AI",
+  "description": "An all-in-one generative AI platform for automated brand identity creation, visual asset generation, and content strategy.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

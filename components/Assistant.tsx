@@ -51,32 +51,32 @@ const Assistant: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-12rem)] flex flex-col bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
-      <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-white">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-100">
-            <Bot size={28} strokeWidth={2.5} />
+    <div className="max-w-4xl mx-auto h-[calc(100vh-14rem)] flex flex-col bg-white rounded-[2.5rem] shadow-2xl border-4 border-slate-100 overflow-hidden">
+      <div className="p-8 border-b-4 border-slate-50 flex items-center justify-between bg-white">
+        <div className="flex items-center space-x-6">
+          <div className="w-14 h-14 bg-indigo-700 rounded-3xl flex items-center justify-center text-white shadow-2xl">
+            <Bot size={32} strokeWidth={3} />
           </div>
           <div>
-            <h3 className="font-black text-slate-900 text-xl tracking-tight">Brand Strategist</h3>
-            <p className="text-xs text-emerald-600 font-black uppercase tracking-widest">Active • Gemini 3.0 Pro</p>
+            <h3 className="font-black text-slate-900 text-2xl tracking-tighter">Strategist v3.0</h3>
+            <p className="text-[10px] text-emerald-600 font-black uppercase tracking-[0.2em]">Neural Engine Online</p>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-8 space-y-8 bg-slate-50/20">
+      <div className="flex-1 overflow-y-auto p-10 space-y-10 bg-slate-50/30">
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] flex items-start space-x-4 ${m.role === 'user' ? 'flex-row-reverse space-x-reverse' : 'flex-row'}`}>
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${
-                m.role === 'user' ? 'bg-indigo-100 text-indigo-700' : 'bg-white border-2 border-slate-100 text-slate-700'
+            <div className={`max-w-[85%] flex items-start gap-6 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                m.role === 'user' ? 'bg-indigo-700 text-white' : 'bg-white border-4 border-white text-slate-900'
               }`}>
-                {m.role === 'user' ? <User size={20} strokeWidth={3} /> : <Bot size={20} strokeWidth={3} />}
+                {m.role === 'user' ? <User size={24} strokeWidth={3} /> : <Bot size={24} strokeWidth={3} />}
               </div>
-              <div className={`p-6 rounded-3xl text-base leading-relaxed shadow-sm ${
+              <div className={`p-8 rounded-[2rem] text-xl leading-relaxed shadow-xl ${
                 m.role === 'user' 
-                  ? 'bg-indigo-600 text-white rounded-tr-none font-bold' 
-                  : 'bg-white text-slate-900 border-2 border-slate-100 rounded-tl-none font-semibold'
+                  ? 'bg-indigo-700 text-white rounded-tr-none font-bold' 
+                  : 'bg-white text-slate-900 rounded-tl-none font-bold'
               }`}>
                 {m.text}
               </div>
@@ -85,22 +85,22 @@ const Assistant: React.FC = () => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="flex items-center space-x-3 bg-white p-4 rounded-2xl border-2 border-slate-100 shadow-sm">
-              <Loader2 className="animate-spin text-indigo-600" size={20} />
-              <span className="text-sm text-slate-700 font-black uppercase tracking-widest">Strategizing...</span>
+            <div className="flex items-center space-x-4 bg-white px-8 py-5 rounded-3xl shadow-xl border-4 border-slate-50">
+              <Loader2 className="animate-spin text-indigo-700" size={24} strokeWidth={4} />
+              <span className="text-sm text-slate-900 font-black uppercase tracking-widest">Processing Intelligence...</span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-6 bg-white border-t border-slate-100">
-        <div className="flex items-center space-x-3">
+      <div className="p-8 bg-white border-t-4 border-slate-50">
+        <div className="flex items-center gap-4">
           <div className="relative flex-1">
             <input
               type="text"
-              className="w-full pl-6 pr-6 py-5 rounded-2xl border-2 border-slate-200 focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 outline-none font-black text-slate-900 text-lg shadow-sm transition-all"
-              placeholder="Ask anything about your brand strategy..."
+              className="w-full px-8 py-6 rounded-3xl border-4 border-slate-200 focus:border-indigo-700 outline-none font-black text-slate-900 text-2xl shadow-inner bg-slate-50/50 transition-all placeholder:text-slate-200"
+              placeholder="Query Strategy Engine..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -108,19 +108,16 @@ const Assistant: React.FC = () => {
           </div>
           <VoiceInput 
             onTranscript={(t) => handleSend(t)} 
-            className="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-slate-200 shadow-sm hover:border-indigo-200 transition-all"
+            className="w-20 h-20 rounded-3xl bg-slate-50 border-4 border-slate-100 shadow-xl hover:border-indigo-700 transition-all"
           />
           <button
             onClick={() => handleSend()}
             disabled={isLoading || !input.trim()}
-            className="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center hover:bg-indigo-700 transition-all disabled:opacity-50 shadow-xl shadow-indigo-100 transform active:scale-95"
+            className="w-20 h-20 bg-indigo-700 text-white rounded-3xl flex items-center justify-center hover:bg-black transition-all disabled:opacity-50 shadow-2xl transform active:scale-90"
           >
-            <Send size={28} strokeWidth={3} />
+            <Send size={32} strokeWidth={3} />
           </button>
         </div>
-        <p className="text-[11px] text-center text-slate-400 mt-4 font-black uppercase tracking-widest">
-          BrandCraft Intelligence • Professional Grade Advisor
-        </p>
       </div>
     </div>
   );

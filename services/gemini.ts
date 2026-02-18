@@ -1,5 +1,5 @@
 
-import { GoogleGenAI, Type, GenerateContentResponse } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { SentimentResult } from "../types";
 
 const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
@@ -24,24 +24,26 @@ export const generateBrandNames = async (industry: string, values: string[], aud
 
 export const generateLogo = async (brandName: string, industry: string, style: string) => {
   const ai = getAI();
-  const prompt = `A professional minimalist logo for a brand named "${brandName}" in the ${industry} industry. Style: ${style}. High resolution, clean vectors, isolated on white background.`;
+  const prompt = `Generate a modern, minimalist, professional SVG logo for a brand named "${brandName}". 
+  The brand is in the ${industry} industry. 
+  Style: ${style}. 
+  Requirements:
+  - Return ONLY the raw <svg> code.
+  - No explanations or markdown code blocks.
+  - Use high-contrast colors (like black, indigo, or slate).
+  - Include the brand name "${brandName}" inside the SVG with a clean sans-serif font.
+  - Ensure it has a viewBox="0 0 400 400".
+  - Make it look premium and vector-based.`;
   
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash-image',
-    contents: { parts: [{ text: prompt }] },
-    config: {
-      imageConfig: {
-        aspectRatio: "1:1"
-      }
-    }
+    model: 'gemini-3-flash-preview',
+    contents: prompt,
   });
 
-  for (const part of response.candidates?.[0]?.content?.parts || []) {
-    if (part.inlineData) {
-      return `data:image/png;base64,${part.inlineData.data}`;
-    }
-  }
-  return null;
+  const text = response.text || '';
+  // Extract SVG if the model wrapped it in markdown
+  const svgMatch = text.match(/<svg[\s\S]*?<\/svg>/);
+  return svgMatch ? svgMatch[0] : null;
 };
 
 export const generateMarketingContent = async (brand: string, type: string) => {
